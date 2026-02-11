@@ -1,0 +1,41 @@
+apps/mobile/node_modules/
+apps/mobile/.expo/
+apps/mobile/dist/
+apps/mobile/web-build/
+apps/mobile/expo-env.d.ts
+apps/mobile/.kotlin/
+apps/mobile/.metro-health-check*
+apps/mobile/.vscode/
+# generated native folders
+apps/mobile/ios
+apps/mobile/android
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+apps/api/node_modules/
+apps/api/dist/
+apps/api/.env
+node_modules/
