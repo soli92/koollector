@@ -1,0 +1,20 @@
+# Postgres locale per Koollector API.
+# Avvio: docker compose up -d
+# Init: scripts/db-init.sql + (opz.) scripts/seed-dev.sql montati al primo bootstrap del volume.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: koollector
+      POSTGRES_PASSWORD: koollector
+      POSTGRES_DB: koollector
+    ports:
+      - "5432:5432"
+    volumes:
+      - koollector_pg:/var/lib/postgresql/data
+      - ./scripts/db-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./scripts/seed-dev.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+
+volumes:
+  koollector_pg:

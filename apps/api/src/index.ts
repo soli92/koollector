@@ -4,80 +4,71 @@ import cors from "cors";
 import { createServer } from "http";
 
 import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
+import { expressMiddleware } from "@as-integrations/express5";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 
 import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/lib/use/ws";
+import { useServer } from "graphql-ws/use/ws";
 
-const typeDefs = `#graphql
-  type Query {
-    health: String!
-  }
-
-  type Subscription {
-    ping: String!
-  }
-`;
-
-const resolvers = {
-    Query: {
-        health: () => "ok"
-    },
-    Subscription: {
-        ping: {
-            subscribe: async function* () {
-                while (true) {
-                    await new Promise(r => setTimeout(r, 2000));
-                    yield { ping: "pong" };
-                }
-            }
-        }
-    }
-};
+import { getPool } from "./db.js";
+import { typeDefs } from "./graphql/typeDefs.js";
+import { resolvers } from "./graphql/resolvers.js";
 
 async function start() {
-    const app = express();
-    const httpServer = createServer(app);
+  const pool = getPool();
 
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const app = express();
+  const httpServer = createServer(app);
 
-    const wsServer = new WebSocketServer({
-        server: httpServer,
-        path: "/graphql"
-    });
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
 
-    const serverCleanup = useServer({ schema }, wsServer);
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: "/graphql",
+  });
 
-    const server = new ApolloServer({
-        schema,
-        plugins: [
-            ApolloServerPluginDrainHttpServer({ httpServer }),
-            {
-                async serverWillStart() {
-                    return {
-                        async drainServer() {
-                            await serverCleanup.dispose();
-                        }
-                    };
-                }
-            }
-        ]
-    });
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: () => ({ pool }),
+    },
+    wsServer
+  );
 
-    await server.start();
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
+  });
 
-    app.use(
-        "/graphql",
-        cors(),
-        express.json(),
-        expressMiddleware(server)
-    );
+  await server.start();
 
-    httpServer.listen(4000, () => {
-        console.log("🚀 Koollector API → http://localhost:4000/graphql");
-    });
+  app.use(
+    "/graphql",
+    cors(),
+    express.json(),
+    expressMiddleware(server, {
+      context: async () => ({ pool }),
+    })
+  );
+
+  httpServer.listen(4000, () => {
+    console.log("🚀 Koollector API → http://localhost:4000/graphql");
+  });
 }
 
-start();
+start().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

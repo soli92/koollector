@@ -36,3 +36,6 @@ create table if not exists changes (
   payload jsonb,
   server_ts timestamptz default now()
 );
+
+create index if not exists idx_changes_collection_cursor
+  on changes (collection_id, cursor);
