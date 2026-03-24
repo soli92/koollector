@@ -87,9 +87,19 @@ Terminale 2 — API + Expo:
 npm run dev
 ```
 
+## Script root (riepilogo)
+
+| Script | Azione |
+|--------|--------|
+| `npm run dev` | API + mobile in parallelo (`concurrently`) |
+| `npm run dev:api` | Solo `apps/api` |
+| `npm run dev:mobile` | Solo Expo (`apps/mobile`) |
+| `npm run db:up` / `db:down` / `db:reset` | Docker Compose Postgres |
+| `npm run typecheck:api` | `tsc` sull’API |
+
 ## Struttura workspace
 
-Solo `apps/*` (non esiste ancora una cartella `packages/` condivisa).
+Solo `apps/*` (non esiste una cartella `packages/` condivisa al momento).
 
 ## Licenza
 
