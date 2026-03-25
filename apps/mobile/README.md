@@ -4,6 +4,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## Get started
 
+Dal monorepo Koollector usa **Node 22 LTS** (vedi **`.nvmrc`** nella root del repo).
+
 1. Install dependencies
 
    ```bash

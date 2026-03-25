@@ -7,7 +7,8 @@ Monorepo **npm workspaces** con:
 
 ## Prerequisiti
 
-- Node 20+
+- **Node.js 22+** (file **`.nvmrc`** nella root; Expo / Metro richiedono spesso patch recenti di Node 20+ o 22 LTS).
+- **`.npmrc`** in root: registry npm pubblico e `tag=latest` (evita dist-tag ereditati dal profilo utente).
 - Docker (per Postgres locale) oppure un’istanza Postgres raggiungibile
 - Per la mobile: Expo CLI / ambiente iOS o Android
 
@@ -100,6 +101,10 @@ npm run dev
 ## Struttura workspace
 
 Solo `apps/*` (non esiste una cartella `packages/` condivisa al momento).
+
+## CI e changelog
+
+Non sono definiti workflow GitHub Actions in questo repo: esegui `typecheck:api` e test manuali come da script. Nessun **CHANGELOG** generato automaticamente; usa commit chiari o aggiungi in futuro Changesets / semantic-release se serve.
 
 ## Licenza
 
