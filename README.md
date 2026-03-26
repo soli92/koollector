@@ -5,6 +5,8 @@ Monorepo **npm workspaces** con:
 - **`apps/api`** — GraphQL (Apollo Server 5) + Express 5 + WebSocket (`graphql-ws`) + **PostgreSQL** (`pg`). Porta **4000**, path **`/graphql`**.
 - **`apps/mobile`** — Expo (React Native) + Expo Router + SQLite locale (`expo-sqlite`) + Apollo Client (HTTP + WS) per sync **push/pull** verso l’API.
 
+Contesto operativo per assistenti AI: **[`AGENTS.md`](./AGENTS.md)**.
+
 ## Prerequisiti
 
 - **Node.js 22+** (file **`.nvmrc`** nella root; Expo / Metro richiedono spesso patch recenti di Node 20+ o 22 LTS).

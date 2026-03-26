@@ -1,0 +1,10 @@
+---
+description: All’inizio del lavoro nel repo, leggere AGENTS.md e README
+alwaysApply: true
+---
+
+# Policy contesto repository
+
+Prima di task su **API GraphQL, mobile Expo o database** di Koollector, **leggi `AGENTS.md`** nella root e **`README.md`** (setup Docker, env, workspace).
+
+Non committare `.env` con credenziali reali; usare solo `.env.example`.
