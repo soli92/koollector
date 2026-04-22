@@ -21,7 +21,7 @@ Monorepo **npm workspaces**: **`apps/api`** (GraphQL Apollo + Express, Postgres,
 
 ## File utili
 
-`README.md` · `apps/api/` · `apps/mobile/` · `docker-compose.yml` · `scripts/db-init.sql`
+`README.md` · `AI_LOG.md` · `apps/api/` · `apps/mobile/` · `docker-compose.yml` · `scripts/db-init.sql`
 
 ## Regole per l’agente
 
