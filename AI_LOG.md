@@ -8,7 +8,7 @@ Memoria di sviluppo AI-assisted. Annotazioni sui prompt, decisioni e pattern eme
 
 Monorepo / workspace per raccolta **Koollector**: codice **mobile** (SQLite locale) e sync verso **API + Postgres** (commit `ad910bf`), Docker e documentazione. History compatta (9 commit).
 
-**Stack AI usato (inferito)**: **Cursor** — evidenza diretta nel commit `7d59e6c chore: add AGENTS.md, README link, Cursor agents-context rule`.
+**Stack AI usato (inferito; aggiornato 2026-04-22)**: **Cursor** — commit `7d59e6c` aggiunge `AGENTS.md` e `.cursor/rules/agents-context.mdc`. Nessun SDK LLM nel prodotto. History corta (9 commit) → evidenza limitata oltre questi artefatti.
 
 **Periodo di sviluppo**: 2026-02-11 (`4bfc953` Initial commit) → 2026-03-26 (`7d59e6c`).
 
@@ -32,9 +32,13 @@ Monorepo / workspace per raccolta **Koollector**: codice **mobile** (SQLite loca
 
 - Struttura **workspace** implicita (mobile + backend nel tempo).
 
-**Prompt chiave usati**: > [TODO da compilare manualmente]
+**Prompt chiave usati**
 
-**Lezioni apprese**: > [TODO da compilare manualmente]
+> **Prompt [inferito]**: Nessun prompt specifico desumibile dai file del repo. La fase appare come **bootstrap standard** di monorepo/import codice mobile (`43bb5a1`, `b3defff`).
+
+**Lezioni apprese**
+
+> Nessuna lezione tecnica specifica desumibile oltre l’uso di commit placeholder (`956e64c ..`) — conviene evitare messaggi vuoti in `main`.
 
 ### Fase 2 — Sync Postgres, Docker, documentazione e contesto agenti
 
@@ -51,9 +55,14 @@ Monorepo / workspace per raccolta **Koollector**: codice **mobile** (SQLite loca
 
 - **Postgres** come store server-side accanto a SQLite su device (`ad910bf`).
 
-**Prompt chiave usati**: > [TODO da compilare manualmente]
+**Prompt chiave usati**
 
-**Lezioni apprese**: > [TODO da compilare manualmente]
+> **Prompt [inferito]**: "Collega l’API sync a Postgres, correggi SQLite su mobile, aggiungi Docker e README tabella script npm; aggiungi AGENTS e regola Cursor."
+> *Evidenza*: `ad910bf`, `199e564`, `7d59e6c`.
+
+**Lezioni apprese**
+
+- **Dual storage** SQLite + Postgres richiede attenzione a conflitti e migrazioni schema lato mobile (`ad910bf` messaggio).
 
 ### Altre attività
 
@@ -95,10 +104,28 @@ Non sono emerse ulteriori macro-fasi distinte: il repo ha pochi commit e alta de
 
 ## Punti aperti / note per il futuro
 
-> [TODO da compilare manualmente: roadmap prodotto, stato release mobile, CI]
+- **grep `TODO|FIXME|HACK|XXX`** in `apps/` (workspace): nessun match evidenziato in questa passata.
+- **CI**: non emerge pipeline GitHub Actions nei commit elencati in appendice — valutare se manca o è in altro branch.
+- **Debito tecnico inferito**: pochi commit totali → mancanza probabile di test automatici documentati nel log.
+- **Debito tecnico inferito**: sync API/GraphQL (citato in `AGENTS.md` regole) richiede contract test tra mobile e server non visibili qui.
 
 ---
 
-> **Nota metodologica**: questo file è stato generato retroattivamente analizzando la history del repo. Le sezioni con `> [TODO da compilare manualmente]` richiedono la memoria del developer e non possono essere inferite dalla sola analisi automatica. Integra progressivamente con annotazioni manuali mentre lavori alle prossime fasi del progetto.
+> **Nota metodologica**: completamento inferenze 2026-04-22; roadmap prodotto resta fuori repo.
+
+---
+
+## Metodologia compilazione automatica
+
+Completamento autonomo il **22 aprile 2026** analizzando:
+
+- **9** commit
+- **~5** file (`README.md`, `AGENTS.md`, `docker-compose.yml`, `package.json` workspace, `.cursor/rules`)
+- **0** occorrenze TODO/FIXME rilevanti (grep workspace limitato)
+
+**Punti di minore confidenza:**
+
+- Struttura esatta `apps/api` vs `apps/mobile` non ispezionata file-per-file in questa passata.
+- Prompt fase 1 quasi assenti per mancanza di artefatti.
 
 ---
