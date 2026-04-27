@@ -5,7 +5,7 @@ Monorepo **npm workspaces** con:
 - **`apps/api`** — GraphQL (Apollo Server 5) + Express 5 + WebSocket (`graphql-ws`) + **PostgreSQL** (`pg`). Porta **4000**, path **`/graphql`**.
 - **`apps/mobile`** — Expo (React Native) + Expo Router + SQLite locale (`expo-sqlite`) + Apollo Client (HTTP + WS) per sync **push/pull** verso l’API.
 
-Contesto operativo per assistenti AI: **[`AGENTS.md`](./AGENTS.md)**.
+Contesto operativo per assistenti AI: **[`AGENTS.md`](./AGENTS.md)**, con **[`AI_LOG.md`](./AI_LOG.md)** per le note di sviluppo. [Soli Prof](https://github.com/soli92/soli-prof) elenca questo monorepo in RAG; webhook su `push` (documentazione in Soli Prof `AGENTS.md`).
 
 ## Prerequisiti
 
