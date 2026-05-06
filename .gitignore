@@ -39,3 +39,15 @@ apps/api/node_modules/
 apps/api/dist/
 apps/api/.env
 node_modules/
+
+# LLM Wiki template
+# Obsidian
+.obsidian/workspace*
+.obsidian/cache
+.obsidian/graph.json
+# OS
+Thumbs.db
+# Editor
+.vscode/
+*.swp
+# Note: raw/ is intentionally NOT ignored. Sources are part of ground truth.
