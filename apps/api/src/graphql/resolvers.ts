@@ -1,7 +1,17 @@
 import type { Pool } from "pg";
+import { GraphQLError } from "graphql";
 import GraphQLJSON from "graphql-type-json";
 
-export type GqlContext = { pool: Pool };
+export type GqlContext = { pool: Pool; actorUserId: string | null };
+
+function requireAuth(ctx: GqlContext): string {
+  if (!ctx.actorUserId) {
+    throw new GraphQLError("Unauthenticated", {
+      extensions: { code: "UNAUTHENTICATED" },
+    });
+  }
+  return ctx.actorUserId;
+}
 
 type PushEventInput = {
   eventId: string;
@@ -11,7 +21,7 @@ type PushEventInput = {
   op: string;
   payload: unknown;
   clientTs: string;
-  actorUserId: string;
+  actorUserId: string; // ignored after auth — value comes from verified JWT context
 };
 
 export const resolvers = {
@@ -34,6 +44,8 @@ export const resolvers = {
       },
       ctx: GqlContext
     ) => {
+      requireAuth(ctx);
+
       const { sinceCursor, collectionIds } = args.input;
       const sinceStr = sinceCursor?.trim() || "0";
       try {
@@ -88,6 +100,7 @@ export const resolvers = {
       args: { input: { deviceId: string; events: PushEventInput[] } },
       ctx: GqlContext
     ) => {
+      const actorUserId = requireAuth(ctx);
       const { deviceId, events } = args.input;
       const acks: { eventId: string; status: string; reason?: string }[] = [];
 
@@ -102,7 +115,7 @@ export const resolvers = {
                VALUES ($1::uuid, $2::uuid, $3::uuid, $4::uuid)
                ON CONFLICT (event_id) DO NOTHING
                RETURNING event_id`,
-              [ev.eventId, deviceId, ev.actorUserId, ev.collectionId]
+              [ev.eventId, deviceId, actorUserId, ev.collectionId]
             );
 
             if (ins.rowCount === 0) {

@@ -14,6 +14,8 @@ import { useServer } from "graphql-ws/use/ws";
 import { getPool } from "./db.js";
 import { typeDefs } from "./graphql/typeDefs.js";
 import { resolvers } from "./graphql/resolvers.js";
+import { authMiddleware, actorFromWsParams } from "./auth/middleware.js";
+import { buildAuthRouter } from "./routes/auth.js";
 
 async function start() {
   const pool = getPool();
@@ -31,7 +33,10 @@ async function start() {
   const serverCleanup = useServer(
     {
       schema,
-      context: () => ({ pool }),
+      context: (ctx) => ({
+        pool,
+        actorUserId: actorFromWsParams(ctx.connectionParams),
+      }),
     },
     wsServer
   );
@@ -54,12 +59,19 @@ async function start() {
 
   await server.start();
 
+  app.use(cors());
+  app.use(express.json());
+  app.use(authMiddleware);
+
+  app.use("/auth", buildAuthRouter(pool));
+
   app.use(
     "/graphql",
-    cors(),
-    express.json(),
     expressMiddleware(server, {
-      context: async () => ({ pool }),
+      context: async ({ req }) => ({
+        pool,
+        actorUserId: req.actorUserId ?? null,
+      }),
     })
   );
 

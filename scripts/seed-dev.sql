@@ -1,8 +1,12 @@
 -- Dati minimi per provare push/pull dalla app (UUID fissi per riferimento in codice di test).
 -- Esegui dopo db-init.sql:  psql "$DATABASE_URL" -f scripts/seed-dev.sql
 
-insert into users (id, display_name)
-values ('11111111-1111-4111-8111-111111111111', 'Dev user')
+insert into users (id, display_name, email, provider, provider_id)
+values ('11111111-1111-4111-8111-111111111111', 'Dev user', 'dev@koollector.local', 'dev', 'dev-user-1')
+on conflict (id) do nothing;
+
+insert into users (id, display_name, email, provider, provider_id)
+values ('11111111-1111-4111-8111-222222222222', 'Dev user 2', 'dev2@koollector.local', 'dev', 'dev-user-2')
 on conflict (id) do nothing;
 
 insert into collections (id, name, created_by_user_id)
